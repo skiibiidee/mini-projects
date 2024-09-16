@@ -1,0 +1,11 @@
+{
+  "name": "Home",
+  "version": "1.0.0",
+  "run": "app.js",
+  "data": {
+    "get": ["/"],
+    "post": [],
+    "socket": [],
+    "localstorage": []
+  }
+}

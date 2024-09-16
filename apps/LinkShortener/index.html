@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Shortener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="text-pretty bg-gray-900 dark:bg-gray-900 dark:text-gray-200 flex items-center justify-center min-h-screen"
+  >
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+      <a href="/shorten"
+        ><h1 class="text-2xl font-bold mb-6 text-center text-gray-100">
+          Link Shortener
+        </h1></a
+      >
+      <form action="/shorten" method="post" id="shortenForm">
+        <div class="mb-4">
+          <label for="url" class="block text-gray-400 font-medium mb-2"
+            >Enter URL:</label
+          >
+          <input
+            type="url"
+            id="url"
+            name="url"
+            placeholder="https://example.com"
+            required
+            class="w-full p-3 border border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          id="submitBtn"
+          class="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center relative"
+        >
+          <span id="buttonText">Shorten URL</span>
+          <svg
+            id="spinner"
+            class="animate-spin hidden ml-2 h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            ></path>
+          </svg>
+        </button>
+      </form>
+
+      <h3
+        id="result-display"
+        class="text-blue-400 py-3 text-xl font-bold break-words"
+      ></h3>
+      <div id="link" class="items-center justify-center" style="display: none">
+        <input
+          type="text"
+          class="bg-gray-700 text-center text-gray-200 rounded-md p-1 border border-gray-600 shadow-sm font-bold"
+          id="link-display"
+          disabled
+        />
+      </div>
+    </div>
+    <script>
+      const queryString = window.location.search;
+
+      // Create a URLSearchParams object
+      const urlParams = new URLSearchParams(queryString);
+
+      // Get specific parameters by name
+      const result = urlParams.get('result');
+      const created = urlParams.get('created');
+      const url = urlParams.get('url');
+      if (created == '1') {
+        document.getElementById('link').style.display = 'flex';
+        document.getElementById('link-display').value = result;
+        document.getElementById(
+          'result-display'
+        ).textContent = `Your link for: ${
+          url.length < 40 ? url : url.substring(0, 40) + '..'
+        } has been created! Copy the link below.`;
+      } else if (created == '0') {
+        document.getElementById(
+          'result-display'
+        ).textContent = `Error, please try again.`;
+      }
+
+      const form = document.getElementById('shortenForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const spinner = document.getElementById('spinner');
+      const buttonText = document.getElementById('buttonText');
+
+      form.addEventListener('submit', function (e) {
+        // Show the spinner and hide the button text
+        buttonText.classList.add('hidden');
+        spinner.classList.remove('hidden');
+
+        // Optionally, disable the button to prevent multiple submissions
+        submitBtn.disabled = true;
+        submitBtn.classList.add('cursor-not-allowed');
+      });
+    </script>
+  </body>
+</html>
