@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Editor</title>
+    <style>
+      body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        background-color: rgb(17, 24, 39);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        color: white;
+        box-sizing: border-box;
+      }
+      .editor-container {
+        background-color: rgb(31, 41, 55);
+        padding: 30px;
+        padding-top: 0px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        width: 80%;
+        max-width: 1200px;
+        display: flex;
+        gap: 20px;
+      }
+
+      .title {
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: rgb(167, 139, 250);
+        font-weight: bold;
+      }
+      .editor-section textarea {
+        width: 100%;
+        border: 2px solid rgb(109, 40, 217);
+        border-radius: 8px;
+        resize: vertical;
+        height: 200px;
+        padding: 20px;
+        max-height: 70svh;
+        outline: none;
+        background-color: rgb(46, 16, 101);
+        color: rgb(203, 213, 225);
+        font-size: 16px;
+        box-shadow: 0 0 0 2px transparent;
+        transition: box-shadow 0.2s;
+        box-sizing: border-box;
+      }
+      .editor-section textarea:focus {
+        box-shadow: 0 0 0 4px rgb(109, 40, 217);
+      }
+      .editor-section .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+      }
+      .editor-section button {
+        background-color: rgb(192 38 211);
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .editor-section button:hover {
+        background-color: #1e40af;
+      }
+      .editor-section,
+      .preview-section {
+        width: 100%;
+        overflow: scroll;
+      }
+      .preview {
+        border: 2px solid rgb(76, 29, 149);
+        border-radius: 8px;
+        padding: 20px;
+        max-height: 70svh;
+        background-color: rgb(46, 16, 101);
+        color: rgb(203, 213, 225);
+        overflow-y: scroll;
+        height: 200px;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="editor-container">
+      <div class="editor-section">
+        <h2 class="title">Markdown Editor</h2>
+        <textarea
+          id="markdownEditor"
+          placeholder="Type your markdown here..."
+        ></textarea>
+        <div class="button-container">
+          <button id="loadButton">Load</button>
+          <button id="saveButton">Save</button>
+        </div>
+      </div>
+      <div class="preview-section">
+        <h2 class="title">Preview</h2>
+        <div id="markdownPreview" class="preview"></div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+    <script>
+      const editor = document.getElementById('markdownEditor');
+      const loadButton = document.getElementById('loadButton');
+      const saveButton = document.getElementById('saveButton');
+      const preview = document.getElementById('markdownPreview');
+      const converter = new showdown.Converter();
+      
+      const onresize = (dom_elem, callback) => {
+        const resizeObserver = new ResizeObserver(() => callback());
+        resizeObserver.observe(dom_elem);
+      };
+      onresize(editor, () => {
+        preview.style.height = editor.style.height;
+      });
+      function updatePreview() {
+        const markdownText = editor.value;
+        preview.innerHTML = converter.makeHtml(markdownText);
+      }
+
+      loadButton.addEventListener('click', () => {
+        const savedMarkdown = localStorage.getItem('mdtext');
+        if (savedMarkdown) {
+          editor.value = savedMarkdown;
+          updatePreview();
+        } else {
+          alert('No saved markdown found!');
+        }
+      });
+
+      saveButton.addEventListener('click', () => {
+        const markdownText = editor.value;
+        localStorage.setItem('mdtext', markdownText);
+        alert('Markdown saved successfully!');
+      });
+
+      editor.addEventListener('input', updatePreview);
+      updatePreview();
+    </script>
+  </body>
+</html>

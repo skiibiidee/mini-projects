@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.png" />
+
+    <style>
+      body {
+        background-color: #1f2937;
+      }
+      .card {
+        background-color: #374151;
+      }
+      .card-title {
+        color: #f9fafb;
+      }
+      .card-body {
+        color: #d1d5db;
+      }
+      .card-button {
+        background-color: #3b82f6;
+        color: #f9fafb;
+      }
+      .card-button:hover {
+        background-color: #2563eb;
+      }
+    </style>
+  </head>
+  <body class="text-gray-100">
+    <header class="p-6 bg-slate-900">
+      <h1 class="text-3xl font-bold text-center">Mini Projects</h1>
+      <p class="text-center mt-2 text-lg">
+        Explore our latest mini projects designed to enhance your experience in
+        the web.
+      </p>
+    </header>
+
+    <main class="p-6">
+      <section class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {projectcards}
+      </section>
+    </main>
+
+    <footer class="p-6 bg-slate-900 text-center">
+      <p>&copy; 2024 @skiibiidee. All rights reserved.</p>
+    </footer>
+    <script>
+      const spinner = `
+          <svg
+            id="spinner"
+            class="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            ></path>
+          </svg>`;
+      const buttons = document.querySelectorAll(".card-button");
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function (event) {
+          event.preventDefault();
+          buttons[i].innerHTML = spinner;
+          window.location.href = this.href;
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "LinkShortener",
+  "version": "1.0.0",
+  "run": "app.js",
+  "data": {
+    "get": ["/shorten", "/shorten/"],
+    "post": ["/shorten"],
+    "socket": [],
+    "localstorage": []
+  }
+}

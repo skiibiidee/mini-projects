@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "name": "MarkdownEditor",
+      "title": "📝 Markdown Editor",
+      "description": "Write and preview markdown content in real-time with our sleek editor. Ideal for documentation, notes, and more.",
+      "href": "/markdown",
+      "path": "MarkdownEditor"
+    },
+    {
+      "name": "LinkShortener",
+      "title": "🔗 Link Shortener",
+      "description": "Easily shorten and manage your URLs with the intuitive interface. Perfect for simplifying long links.",
+      "href": "/shorten",
+      "path": "LinkShortener"
+    },
+    {
+      "name": "Home",
+      "path": "Home"
+    }
+  ]
+}
