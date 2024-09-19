@@ -1,5 +1,19 @@
 # 📜 Changelog
 
+## [1.2.0] - 2024-09-19
+
+### 🎉 Changed
+
+- **README.md file**
+
+  - Changed readme to reflect repo goal.
+
+- **Changed word elements html page styling**
+
+  - Changed overflow and bg.
+
+---
+
 ## [1.1.0] - 2024-09-19
 
 ### 🎉 Added

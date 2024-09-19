@@ -46,7 +46,7 @@
   <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
     <!-- Header -->
     <header
-      class="fixed top-0 left-0 w-full h-16 bg-gray-800 p-4 flex items-center justify-between z-10"
+      class="fixed top-0 left-0 w-full h-16 p-4 flex items-center justify-between z-10"
     >
       <a href="/wordelements"
         ><h1 class="text-2xl font-bold text-gray-100">
@@ -58,7 +58,7 @@
 
     <!-- Main Content -->
     <main class="flex-grow flex flex-col items-center pt-20">
-      <div class="bg-invisible p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <div class="mb-4">
           <label for="elementQuery" class="block text-gray-400 font-medium mb-2"
             >Enter text:</label
@@ -95,7 +95,7 @@
             </svg>
           </div>
         </div>
-        <div id="result" class="bg-gray-900 p-4 rounded-md shadow-md">
+        <div id="result" class="p-4 rounded-md">
           <ul id="elementList" class="text-gray-200"></ul>
         </div>
       </div>
@@ -178,8 +178,8 @@
                   "bg-gray-700",
                   "rounded-md",
                   "shadow-sm",
-                  "relative", // Needed for tooltip positioning
-                );
+                  "overflow-warp",
+                  "break-all"          );
                 li.innerHTML = resultGroup
                   .map((element) => `<span>${element.symbol}</span>`)
                   .join("");
