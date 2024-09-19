@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Elements</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      #elementList {
+        overflow-y: auto;
+      }
+      #result {
+        min-height: 300px;
+        max-height: 300px;
+        overflow: scroll;
+      }
+      .input-wrapper {
+        position: relative;
+      }
+      .tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 0.875rem; /* smaller text size */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+      }
+      .tooltip-show {
+        opacity: 1;
+        visibility: visible;
+      }
+      .relative:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-gray-100 flex flex-col h-screen">
+    <!-- Header -->
+    <header
+      class="fixed top-0 left-0 w-full h-16 bg-gray-800 p-4 flex items-center justify-between z-10"
+    >
+      <a href="/wordelements"
+        ><h1 class="text-2xl font-bold text-gray-100">
+          Word Element Search
+        </h1></a
+      >
+      <h3 id="result-display" class="text-blue-400 text-xl font-bold"></h3>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center pt-20">
+      <div class="bg-invisible p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div class="mb-4">
+          <label for="elementQuery" class="block text-gray-400 font-medium mb-2"
+            >Enter text:</label
+          >
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="elementQuery"
+              name="elementQuery"
+              placeholder="e.g., Hi or Ruby"
+              required
+              class="w-full p-3 border border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+            />
+            <svg
+              id="spinner"
+              class="spinner animate-spin hidden"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+        <div id="result" class="bg-gray-900 p-4 rounded-md shadow-md">
+          <ul id="elementList" class="text-gray-200"></ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function getMatches(query, elements) {
+        const results = [];
+
+        function search(index, currentResult) {
+          if (index >= query.length) {
+            if (currentResult.length > 0) {
+              results.push(currentResult);
+            }
+            return;
+          }
+          if (query[index] === " ") {
+            search(index + 1, [
+              ...currentResult,
+              { symbol: " ", name: "space" },
+            ]);
+          }
+          const char = query[index].toUpperCase();
+          const oneCharMatch = elements[char];
+          let twoCharMatch;
+          const twocharchar =
+            query.length !== index
+              ? char + String(query[index + 1]).toLowerCase()
+              : null;
+          if (twocharchar) {
+            twoCharMatch = elements[twocharchar];
+          }
+          if (twoCharMatch) {
+            search(index + 2, [
+              ...currentResult,
+              { symbol: twocharchar, name: elements[twocharchar] },
+            ]);
+          }
+
+          if (oneCharMatch) {
+            search(index + 1, [
+              ...currentResult,
+              { symbol: char, name: elements[char] },
+            ]);
+          }
+        }
+
+        search(0, []);
+
+        return results;
+      }
+
+      fetch("/wordelements/elements")
+        .then((response) => response.json())
+        .then((elements) => {
+          const spinner = document.getElementById("spinner");
+          const resultDisplay = document.getElementById("result-display");
+          const elementList = document.getElementById("elementList");
+          const elementQuery = document.getElementById("elementQuery");
+
+          elementQuery.addEventListener("input", () => {
+            spinner.classList.remove("hidden");
+            elementList.classList.add("hidden");
+
+            const query = elementQuery.value;
+            const results = getMatches(query, elements);
+
+            resultDisplay.textContent =
+              results.length > 0
+                ? `${results.length} result${results.length > 1 ? "s" : ""} found`
+                : "No results found";
+            elementList.innerHTML = "";
+
+            if (results.length > 0) {
+              results.forEach((resultGroup) => {
+                const li = document.createElement("li");
+                li.classList.add(
+                  "mb-2",
+                  "p-2",
+                  "bg-gray-700",
+                  "rounded-md",
+                  "shadow-sm",
+                  "relative", // Needed for tooltip positioning
+                );
+                li.innerHTML = resultGroup
+                  .map((element) => `<span>${element.symbol}</span>`)
+                  .join("");
+                li.innerHTML +=
+                  "<br>(" +
+                  resultGroup.map((element) => `${element.name}`).join(", ") +
+                  ")";
+                elementList.appendChild(li);
+              });
+            }
+
+            // Reset loading state
+            elementList.classList.remove("hidden");
+            spinner.classList.add("hidden");
+          });
+        });
+    </script>
+  </body>
+</html>

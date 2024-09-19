@@ -17,6 +17,13 @@
     {
       "name": "Home",
       "path": "Home"
+    },
+    {
+      "name": "WordElements",
+      "path": "WordElements",
+      "title": "🔍 Word Elements Search",
+      "description": "Find chemical elements whose symbols can spell out any word. Simply enter a text and discover the elements that combine to form it. ",
+      "href": "/wordelements"
     }
   ]
 }

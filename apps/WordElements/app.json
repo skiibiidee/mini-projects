@@ -1,0 +1,11 @@
+{
+  "name": "WordElements",
+  "version": "1.0.0",
+  "run": "app.js",
+  "data": {
+    "get": ["/wordelements/elements"],
+    "post": [],
+    "socket": [],
+    "localstorage": []
+  }
+}

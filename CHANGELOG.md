@@ -1,5 +1,15 @@
 # 📜 Changelog
 
+## [1.1.0] - 2024-09-19
+
+### 🎉 Added
+
+- 🔍 **Word Elements App**
+
+  - 🔍 Enter text to find what elements can form that text!
+
+---
+
 ## [1.0.0] - 2024-09-16
 
 ### 🎉 Added
