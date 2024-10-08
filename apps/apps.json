@@ -24,6 +24,13 @@
       "title": "🔍 Word Elements Search",
       "description": "Find chemical elements whose symbols can spell out any word. Simply enter a text and discover the elements that combine to form it. ",
       "href": "/wordelements"
+    },
+    {
+      "name": "FrequencyChat",
+      "path": "FrequencyChat",
+      "title": "Frequency Chat",
+      "description": "Chat on a frequency, and only those on the same frequency can read your messages!",
+      "href": "/frequencychat"
     }
   ]
 }

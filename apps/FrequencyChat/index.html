@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frequency Chat</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="frequencychat/style.css" />
+  </head>
+  <body>
+    <div id="chat-app">
+      <header>
+        <a href="/frequencychat"><h1>Frequency Chat</h1></a>
+
+        <div class="checkbox-container">
+          <input type="checkbox" class="checkbox" id="rawcb" />
+          <label for="rawcb" style="color: white">Raw Mode</label>
+        </div>
+
+        <div class="frequency">
+          Frequency:
+          <input type="number" id="frequencyInput" value="0" />
+        </div>
+      </header>
+      <div id="chat-container">
+        <ul id="messages"></ul>
+      </div>
+      <form id="chat-form" action="">
+        <input
+          id="messageInput"
+          autocomplete="off"
+          placeholder="Type a message..."
+        />
+        <button class="button">Send</button>
+      </form>
+    </div>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script src="frequencychat/script.js"></script>
+  </body>
+</html>

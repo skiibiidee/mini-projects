@@ -1,0 +1,15 @@
+{
+  "name": "FrequencyChat",
+  "version": "1.0.0",
+  "run": "app.js",
+  "data": {
+    "get": [
+      "/frequencychat",
+      "/frequencychat/script.js",
+      "/frequencychat/style.css"
+    ],
+    "post": [],
+    "socket": ["/frequencychat"],
+    "localstorage": []
+  }
+}

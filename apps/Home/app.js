@@ -10,13 +10,13 @@ module.exports = ({ app }) => {
       }
 
       html += `
-        <div class="card p-6 rounded-lg shadow-lg">
-          <h2 class="card-title text-2xl font-semibold">${apps[i].title}</h2>
+        <div class="card">
+          <h2 class="card-title">${apps[i].title}</h2>
           <p class="card-body mt-2">${apps[i].description}
           </p>
           <a
             href="${apps[i].href}"
-            class="card-button mt-4 inline-block px-4 py-2 rounded"
+            class="card-button button"
             >Go</a
           >
         </div>`;
@@ -33,4 +33,7 @@ module.exports = ({ app }) => {
   app.get("/favicon.png", (req, res) => {
     res.sendFile(path.join(__dirname, "favicon.png"));
   });
+  app.get("/mainstyle.css", (req,res)=>{
+    res.sendFile(path.join(__dirname, "mainstyle.css"))
+  })
 };
