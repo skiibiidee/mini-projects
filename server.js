@@ -1,3 +1,4 @@
+const timeExecuted = Date.now();
 require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
@@ -30,6 +31,8 @@ require('./setup')({
   appUrl,
   processargs,
   io,
+  path,
+  fs
 });
 
 expressapp.get('/robots.txt', (req, res) => {
@@ -37,7 +40,8 @@ expressapp.get('/robots.txt', (req, res) => {
 });
 
 server.listen(port, () => {
+  const timeTaken = Date.now()-timeExecuted
   console.log(
-    `Apps listening at ${process.env['RENDER_EXTERNAL_URL']} at port ${port}`
+    `Apps listening at port ${port} after ${timeTaken}ms.`
   );
 });

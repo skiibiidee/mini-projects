@@ -1,7 +1,5 @@
-module.exports = ({app, io})=>{
-  const path = require('path')
+module.exports = ({app, io, path})=>{
   const clients = {};
-const fs = require('fs')
   app.get("/frequencychat",(req,res)=>{
     res.sendFile(path.join(__dirname,"index.html"))
   })

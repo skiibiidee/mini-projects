@@ -1,7 +1,6 @@
-module.exports = ({ expressapp, appUrl, processargs, io }) => {
+module.exports = ({ expressapp, appUrl, processargs, io, path, fs }) => {
   console.log('Starting apps.');
-  const fs = require('fs');
-  const path = require('path');
+  const timeStart = Date.now();
   const apps = require('./apps/apps.json').apps;
   if (!fs.existsSync(path.join(__dirname + '/appsenv'))) {
     console.log('appsenv plaintext file not found in working directory. ');
@@ -10,13 +9,13 @@ module.exports = ({ expressapp, appUrl, processargs, io }) => {
   const appsenv = JSON.parse(
     fs.readFileSync(path.join(__dirname + '/appsenv'))
   );
-  const args = { app: expressapp, appUrl: appUrl, io: io };
+  const args = { app: expressapp, appUrl: appUrl, io: io, path: path, fs: fs };
   const data = { get: {}, post: {}, socket: {}, localstorage: {} };
   for (let i = 0; i < apps.length; i++) {
     const appenv = appsenv[apps[i].path];
     if (appenv == undefined) {
       throw new Error(
-        `App ${apps[i].name} has no .env string in appsenv.json. (set to "" if no .env variables.)`
+        `App ${apps[i].path} has no .env string in appsenv.json. (set to "" if no .env variables.)`
       );
     }
     fs.writeFileSync(__dirname + `/apps/${apps[i].path}/.env`, appenv);
@@ -87,5 +86,7 @@ module.exports = ({ expressapp, appUrl, processargs, io }) => {
     console.log('Datapoints/Endpoints taken: ' + JSON.stringify(data, null, 2));
   }
   console.log('Apps Started.');
+  const timeTaken = Date.now()-timeStart
+  console.log(`Apps took ${timeTaken}ms to start.`)
   return data;
 };

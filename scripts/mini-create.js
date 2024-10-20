@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 function createProject(projectName) {
   const projectDir = path.join(process.cwd(), `apps/${projectName}`);
   const projectJsonPath = path.join(process.cwd(), "apps/apps.json");
-  const appJsContent = `module.exports = ({app, appUrl, io})=>{
+  const appJsContent = `module.exports = ({app, appUrl, io, path, fs})=>{
     app.get('/${projectName}',(req,res)=>{
 
 

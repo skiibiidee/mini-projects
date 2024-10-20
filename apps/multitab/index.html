@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-tab Browser</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --input-bg-color: #1e1e1e;
+            --input-border-color: #333;
+            --input-text-color: #ffffff;
+            --button-bg-color: #333;
+            --button-text-color: #ffffff;
+            --iframe-border-color: #444;
+            --switch-width: 50px;
+            --switch-height: 26px;
+            --switch-bg: #ccc;
+            --switch-bg-active: #4caf50;
+            --switch-circle-bg: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .tab-settings {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .window {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            border: 2px solid var(--iframe-border-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(100% - 40px);
+            border: none;
+        }
+
+        .iframe-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .horizontal {
+            flex-direction: row;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid var(--input-border-color);
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color);
+            font-size: 16px;
+            margin: 2px;
+        }
+
+        .dark-button {
+            background-color: #333;
+            color: #ffffff;
+            border: 2px solid #444;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+            margin: 3px;
+        }
+
+        .dark-button:hover {
+            background-color: #444;
+            border-color: #555;
+        }
+
+        .dark-button:active {
+            background-color: #555;
+        }
+
+        .dark-button:disabled {
+            background-color: #222;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .exit-btn {
+            width: 100%;
+            background: transparent;
+            color: #777;
+            border: none;
+            margin-bottom: 3px;
+        }
+
+        .minimal-padding {
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="title">Multi-tab Browser</h1>
+
+    <div id="tab-settings" class="tab-settings">
+        <div>
+            <label for="num-windows">Enter number of windows:</label>
+            <input type="number" onchange="updateWindowLayout()" id="num-windows" min="1" value="2">
+        </div>
+        <div>
+            <label for="switch">Horizontal Mode</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" id="layout-switch" onchange="toggleLayout()" checked>
+                <span class="slider round"></span>
+            </label>
+            <button class="dark-button" onclick="fullscreen()">fullscreen</button>
+        </div>
+    </div>
+
+    <div id="exit-div" style="display:none;">
+        <button class="exit-btn" onclick="unfullscreen()">exit</button>
+    </div>
+
+    <div class="container iframe-container" id="iframe-container"></div>
+
+    <script>
+        const iframeContainer = document.getElementById('iframe-container');
+        const layoutSwitch = document.getElementById('layout-switch');
+        let numWindows = 2;
+        let urls = [];
+
+        function createWindows() {
+            iframeContainer.innerHTML = '';
+            for (let i = 0; i < numWindows; i++) {
+                const url = urls[i];
+                const windowDiv = document.createElement('div');
+                windowDiv.classList.add('window');
+
+                const addressBar = document.createElement('input');
+                addressBar.type = 'text';
+                addressBar.classList.add('address-bar');
+                addressBar.placeholder = `Enter URL for window ${i + 1}`;
+                addressBar.id = `address-bar-${i}`;
+                addressBar.value = urls[i] || '';
+                addressBar.autocomplete = "off";
+                windowDiv.appendChild(addressBar);
+
+                const iframe = document.createElement('iframe');
+                iframe.id = `iframe-${i}`;
+                iframe.src = url ? (url.startsWith('http') ? url : `https://${url}`) : 'about:blank';
+                windowDiv.appendChild(iframe);
+
+                addressBar.addEventListener('keypress', (event) => {
+                    if (event.key === 'Enter') {
+                        const url = addressBar.value;
+                        urls[i] = url;
+                        loadIframe(i, url);
+                    }
+                });
+
+                iframeContainer.appendChild(windowDiv);
+            }
+
+            adjustIframeSizes();
+        }
+
+        function updateWindowLayout() {
+            const newNumWindows = parseInt(document.getElementById('num-windows').value, 10);
+            const oldUrls = [...urls];
+
+            numWindows = newNumWindows;
+            urls = new Array(numWindows).fill(null);
+            oldUrls.forEach((url, index) => {
+                if (index < urls.length) {
+                    urls[index] = url;
+                }
+            });
+
+            createWindows();
+        }
+
+        function loadIframe(index, url) {
+            const iframe = document.getElementById(`iframe-${index}`);
+            iframe.src = url ? (url.startsWith('http') ? url : `https://${url}`) : 'about:blank';
+            iframe.style.backgroundColor = url ? "#fff" : "";
+        }
+
+        function adjustIframeSizes() {
+            const windowDivs = document.querySelectorAll('.window');
+            windowDivs.forEach(windowDiv => {
+                windowDiv.style.flexBasis = `${100 / numWindows}%`;
+            });
+        }
+
+        function toggleLayout() {
+            if (layoutSwitch.checked) {
+                iframeContainer.classList.add('horizontal');
+            } else {
+                iframeContainer.classList.remove('horizontal');
+            }
+        }
+
+        function fullscreen() {
+            document.getElementById('title').style.display = "none";
+            document.getElementById('tab-settings').style.display = "none";
+            document.getElementById('exit-div').style.display = "block";
+            document.body.classList.add('minimal-padding');
+        }
+
+        function unfullscreen() {
+            document.getElementById('title').style.display = "flex";
+            document.getElementById('tab-settings').style.display = "flex";
+            document.getElementById('exit-div').style.display = "none";
+            document.body.classList.remove('minimal-padding');
+        }
+
+        createWindows();
+        toggleLayout();
+    </script>
+
+</body>
+</html>

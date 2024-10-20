@@ -2,15 +2,15 @@
   "apps": [
     {
       "name": "MarkdownEditor",
-      "title": "📝 Markdown Editor",
-      "description": "Write and preview markdown content in real-time with our sleek editor. Ideal for documentation, notes, and more.",
+      "title": "Markdown Editor",
+      "description": "Write and preview markdown content in real-time.",
       "href": "/markdown",
       "path": "MarkdownEditor"
     },
     {
       "name": "LinkShortener",
-      "title": "🔗 Link Shortener",
-      "description": "Easily shorten and manage your URLs with the intuitive interface. Perfect for simplifying long links.",
+      "title": "Link Shortener",
+      "description": "Easily shorten your URLs into easy to type and share links.",
       "href": "/shorten",
       "path": "LinkShortener"
     },
@@ -21,7 +21,7 @@
     {
       "name": "WordElements",
       "path": "WordElements",
-      "title": "🔍 Word Elements Search",
+      "title": "Word Elements Search",
       "description": "Find chemical elements whose symbols can spell out any word. Simply enter a text and discover the elements that combine to form it. ",
       "href": "/wordelements"
     },
@@ -29,8 +29,15 @@
       "name": "FrequencyChat",
       "path": "FrequencyChat",
       "title": "Frequency Chat",
-      "description": "Chat on a frequency, and only those on the same frequency can read your messages!",
+      "description": "Chat on a frequency, and only those on the same frequency can read your messages.",
       "href": "/frequencychat"
+    },
+    {
+      "name": "multitab",
+      "path": "multitab",
+      "title": "Multi-Tab Browser",
+      "description": "Compare websites or evade history tracking with multiple tabs. Sites not allowing iframing will not work.",
+      "href": "/multitab"
     }
   ]
 }

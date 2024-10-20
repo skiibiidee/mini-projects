@@ -1,6 +1,4 @@
-module.exports = ({ app }) => {
-  const path = require("path");
-  const fs = require("fs");
+module.exports = ({ app, path, fs }) => {
   function getProjectCards() {
     let html = "";
     const apps = require("../apps.json").apps;
