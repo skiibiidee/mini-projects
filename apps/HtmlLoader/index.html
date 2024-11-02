@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML File Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-96">
+        <h1 class="text-2xl font-bold mb-6 text-center text-white">HTML File Viewer</h1>
+        
+        <input 
+            type="file" 
+            id="fileInput" 
+            accept=".html"
+            class="hidden"
+        >
+        
+        <button 
+            id="uploadBtn" 
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+        >
+            Upload HTML File
+        </button>
+        
+        <p id="errorMsg" class="text-red-500 mt-4 text-center hidden"></p>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            
+            errorMsg.textContent = '';
+            errorMsg.classList.add('hidden');
+
+            if (!file.name.toLowerCase().endsWith('.html')) {
+                errorMsg.textContent = 'Please upload only .html files';
+                errorMsg.classList.remove('hidden');
+                fileInput.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const blankPage = window.open('about:blank', '_blank');
+                blankPage.document.write(e.target.result);
+                blankPage.document.close();
+            };
+
+            reader.onerror = () => {
+                errorMsg.textContent = 'Error reading file';
+                errorMsg.classList.remove('hidden');
+            };
+
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>

@@ -38,6 +38,13 @@
       "title": "Multi-Tab Browser",
       "description": "Compare websites or evade history tracking with multiple tabs. Sites not allowing iframing will not work.",
       "href": "/multitab"
+    },
+    {
+      "name": "HtmlLoader",
+      "path": "HtmlLoader",
+      "title": "HtmlLoader",
+      "description": "Lets you load html files, and view them!",
+      "href": "/htmlloader"
     }
   ]
 }

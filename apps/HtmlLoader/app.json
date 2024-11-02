@@ -1,0 +1,13 @@
+{
+  "name": "HtmlLoader",
+  "version": "1.0.0",
+  "run": "app.js",
+  "data": {
+    "get": [
+      "/htmlloader"
+    ],
+    "post": [],
+    "socket": [],
+    "localstorage": []
+  }
+}
