@@ -34,6 +34,7 @@
     </div>
 
     <script>
+        let filesOpened = 0;
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
         const errorMsg = document.getElementById('errorMsg');
@@ -57,7 +58,7 @@
 
             const reader = new FileReader();
             reader.onload = (e) => {
-                const blankPage = window.open('about:blank', '_blank');
+                const blankPage = window.open('about:blank', filesOpened==0?'_blank':"Window-"+String(filesOpened));
                 blankPage.document.write(e.target.result);
                 blankPage.document.close();
             };
